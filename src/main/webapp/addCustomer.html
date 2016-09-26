@@ -23,15 +23,36 @@
     <!-- Your custom styles (optional) -->
     <link href="css/style.css" rel="stylesheet">
 <link href="css/simple-sidebar.css" rel="stylesheet">
+<style>
+      #map {
+        height: 100%;
+      }
+      .mapRowClass{
+          height: 200px;
+      }
+      #floating-panel {
+        position: absolute;
+        top: 10px;
+        left: 25%;
+        z-index: 5;
+        background-color: #fff;
+        padding: 5px;
+        border: 1px solid #999;
+        text-align: center;
+        font-family: 'Roboto','sans-serif';
+        line-height: 30px;
+        padding-left: 10px;
+      }
+    </style>
 <script>
-    function getMap(){
+    /*function getMap(){
     var comp = encodeURIComponent(document.getElementById("autocomplete").value);
     if(comp !== ""){
       document.getElementById("myFrame").src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCBqWF9WfR9pF23nK8Sd_MteauJraBCRpU&q="+comp; 
     }else {
 //    document.getElementById("myFrame").src = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCBqWF9WfR9pF23nK8Sd_MteauJraBCRpU&q=Space+Needle,Seattle+WA";
    }
-    }
+    }*/
 </script>
 </head>
 
@@ -129,7 +150,7 @@
         <!--First column-->
         <div class="col-md-4">
             <div class="md-form">
-                <input type="text" id="form41" class="form-control">
+                <input type="text" id="form41" class="form-control" >
                 <label for="form41" class="">University</label>
             </div>
         </div>
@@ -157,28 +178,65 @@
         <!--First column-->
        
           <!--First column-->
-        <div class="col-md-4">
+          <div class="col-md-4 ">
             <div id="locationField" class="md-form">
             <input id="autocomplete" placeholder=""
-                   type="text" class="form-control" onfocusout="getMap()" ng-model="address"></input>
+                   type="text" class="form-control" onfocusout="initMap()" ng-model="address"/>
             <label for="form71" class="">House Address</label>
-          
-    </div>
-        </div>
-
-        <!--Second column-->
-        <div class="col-md-4">
-            <div class="md-form">
-            <!--Using google Embed api-->
-            <iframe
-            width="500"
-            height="200"
-             frameborder="0" style="border:0"
-             id ="myFrame"
-            <!--src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCBqWF9WfR9pF23nK8Sd_MteauJraBCRpU&q&q=Space+Needle,Seattle+WA" allowfullscreen>-->
-            </iframe>
-            
             </div>
+          </div>
+            <!--second column-->
+            <!--<div class="col-lg-2">
+            <button style="background-color:silver" class="" onclick="initMap()">show map</button>
+            </div>
+
+        <!--third column-->
+        <div class="col-md-6">
+            <div class="md-form">
+            <div class="col-lg-12" id="map" style="background-color: silver; height: 200px"></div>
+            </div>
+           
+    <script>
+      function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 8,
+          center: {lat: -34.397, lng: 150.644}
+        });
+        var geocoder = new google.maps.Geocoder();
+        var infowindow = new google.maps.InfoWindow;
+
+          geocodeAddress(geocoder, map);
+      }
+
+      function geocodeAddress(geocoder, resultsMap) {
+        var address = document.getElementById('autocomplete').value;
+        
+        geocoder.geocode({'address': address}, function(results, status) {
+          if (status === 'OK') {
+            resultsMap.setCenter(results[0].geometry.location);
+            var marker = new google.maps.Marker({
+              map: resultsMap,
+              position: results[0].geometry.location
+                
+              //
+            });
+          } 
+         
+          else {
+            alert('Geocode was not successful for the following reason: ' + status);
+          }
+          alert(results[0].geometry.location);
+        });
+        
+       
+      }
+      
+    
+    </script>
+    <script async defer
+   src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvSSxN5QzRMcLQXzQ0SFLkXwWkyDkvyR0&callback=initMap">
+    </script>
+            
         </div>
 
     </div> 
@@ -241,8 +299,9 @@
 
     <!-- MDB core JavaScript -->
     <script type="text/javascript" src="js/mdb.min.js"></script>
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBqWF9WfR9pF23nK8Sd_MteauJraBCRpU&libraries=places&callback=initAutocomplete" async="defer"></script>
-  <script>
+    <!--<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCBqWF9WfR9pF23nK8Sd_MteauJraBCRpU&libraries=places&callback=initAutocomplete" async="defer"></script>
+  -->
+    <script>
   $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
